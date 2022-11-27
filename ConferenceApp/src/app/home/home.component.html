@@ -1,0 +1,81 @@
+<div class="mat-title">Conferences</div>
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel *ngFor="let c of conferences" hideToggle="c.isRegistered" (click)="selectConference(c)">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{c.name}}
+      </mat-panel-title>
+      <mat-panel-description>
+        <div>
+          {{c.description}}
+        </div>
+        <div>
+          <mat-icon style="color: indigo; font-size: medium; color: black;">access_time</mat-icon>
+          {{c.startDate}} - {{c.endDate}}
+        </div>
+        <div>
+          <button mat-stroked-button color="primary" class="recipe-toolbar" *ngIf="!c.isRegistered" (click)="registerConference(c._id, c)">Register</button>
+          <span *ngIf="c.isRegistered">Registered</span>
+        </div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<mat-divider></mat-divider>
+
+<div *ngIf="selectedConference" class="event-details">
+  <div class="mat-title">'{{selectedConference.name}}' event details</div>
+
+  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)"
+      class="mat-elevation-z8">
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>
+        Name
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+  
+    <!-- Speaker Column -->
+    <ng-container matColumnDef="speaker">
+      <th mat-header-cell *matHeaderCellDef>
+        Speaker
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.speaker}} </td>
+    </ng-container>
+  
+    <!-- Start time Column -->
+    <ng-container matColumnDef="startTime">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by start time">
+        Start Time
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.startTime}} </td>
+    </ng-container>
+  
+    <!-- End Time Column -->
+    <ng-container matColumnDef="endTime">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by end time">
+        End Time
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.endTime}} </td>
+    </ng-container>
+  
+    <!-- Room Column -->
+    <ng-container matColumnDef="room">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by room">
+        Room
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.room}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="7">No events found</td>
+  </tr>
+  </table>
+</div>
+
